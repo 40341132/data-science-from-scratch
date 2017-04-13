@@ -1,9 +1,11 @@
 from __future__ import division
-from collections import Counter, defaultdict
-from linear_algebra import vector_subtract
-from statistics import mean, correlation, standard_deviation, de_mean
+
+import random
+
 from gradient_descent import minimize_stochastic
-import math, random
+
+from statistics import mean, correlation, standard_deviation, de_mean
+
 
 def predict(alpha, beta, x_i):
     return beta * x_i + alpha
