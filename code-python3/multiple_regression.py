@@ -2,6 +2,7 @@ import random
 from functools import partial
 
 from code.gradient_descent import minimize_stochastic
+
 from linear_algebra import dot, vector_add
 from probability import normal_cdf
 from simple_linear_regression import total_sum_of_squares

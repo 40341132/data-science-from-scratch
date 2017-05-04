@@ -1,6 +1,7 @@
 import random
 
 from code.gradient_descent import minimize_stochastic
+
 from stats import mean, correlation, standard_deviation, de_mean
 
 

@@ -3,6 +3,7 @@ import random
 from functools import partial, reduce
 
 from code.gradient_descent import maximize_stochastic, maximize_batch
+
 from linear_algebra import dot, vector_add
 from machine_learning import train_test_split
 from multiple_regression import estimate_beta

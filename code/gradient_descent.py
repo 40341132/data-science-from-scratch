@@ -1,5 +1,5 @@
 from collections import Counter
-from linear_algebra import distance, vector_subtract, scalar_multiply
+from code.linear_algebra import distance, vector_subtract, scalar_multiply
 from functools import reduce
 import math, random
 

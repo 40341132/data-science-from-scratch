@@ -6,8 +6,8 @@ from functools import partial, reduce
 
 import dateutil.parser
 import matplotlib.pyplot as plt
-
 from code.gradient_descent import maximize_batch
+
 from linear_algebra import shape, get_column, make_matrix, \
     vector_sum, dot, magnitude, vector_subtract, scalar_multiply
 from probability import inverse_normal_cdf
