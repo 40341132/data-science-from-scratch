@@ -1,13 +1,18 @@
+import csv
+import math
+import random
 from collections import Counter, defaultdict
 from functools import partial, reduce
-from linear_algebra import shape, get_row, get_column, make_matrix, \
-    vector_mean, vector_sum, dot, magnitude, vector_subtract, scalar_multiply
-from stats import correlation, standard_deviation, mean
-from probability import inverse_normal_cdf
-from gradient_descent import maximize_batch
-import math, random, csv
-import matplotlib.pyplot as plt
+
 import dateutil.parser
+import matplotlib.pyplot as plt
+
+from code.gradient_descent import maximize_batch
+from linear_algebra import shape, get_column, make_matrix, \
+    vector_sum, dot, magnitude, vector_subtract, scalar_multiply
+from probability import inverse_normal_cdf
+from stats import correlation, standard_deviation, mean
+
 
 def bucketize(point, bucket_size):
     """floor the point to the next lower multiple of bucket_size"""

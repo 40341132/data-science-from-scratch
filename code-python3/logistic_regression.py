@@ -1,11 +1,13 @@
-from collections import Counter
+import math
+import random
 from functools import partial, reduce
+
+from code.gradient_descent import maximize_stochastic, maximize_batch
 from linear_algebra import dot, vector_add
-from gradient_descent import maximize_stochastic, maximize_batch
-from working_with_data import rescale
 from machine_learning import train_test_split
-from multiple_regression import estimate_beta, predict
-import math, random
+from multiple_regression import estimate_beta
+from working_with_data import rescale
+
 
 def logistic(x):
     return 1.0 / (1 + math.exp(-x))

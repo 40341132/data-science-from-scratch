@@ -5,15 +5,14 @@ import math
 import random
 from collections import Counter, defaultdict
 from functools import partial
-
 import dateutil.parser
 import matplotlib.pyplot as plt
-from gradient_descent import maximize_batch
-
+from code.gradient_descent import maximize_batch
 from linear_algebra import shape, get_column, make_matrix, \
     vector_sum, dot, magnitude, vector_subtract, scalar_multiply
 from probability import inverse_normal_cdf
 from statistics import correlation, standard_deviation, mean
+
 
 
 def bucketize(point, bucket_size):
@@ -38,16 +37,21 @@ def compare_two_distributions():
     normal = [57 * inverse_normal_cdf(random.random())
               for _ in range(200)]
 
+
+    data1=[1,2,34,5,86,123,6,43,15]
     plot_histogram(uniform, 10, "Uniform Histogram")
     plot_histogram(normal, 10, "Normal Histogram")
+    plot_histogram(data1,3,"My data")
 
 def random_normal(): 
     """returns a random draw from a standard normal distribution"""
     return inverse_normal_cdf(random.random())
 
+
+
 xs = [random_normal() for _ in range(1000)]
-ys1 = [ x + random_normal() / 2 for x in xs]
-ys2 = [-x + random_normal() / 2 for x in xs]
+ys1 = [ x+2 + random_normal() / 2 for x in xs]
+ys2 = [-x-2 + random_normal() / 2 for x in xs]
 
 
 def scatter():
@@ -76,11 +80,13 @@ def make_scatterplot_matrix():
     num_points = 100
     
     def random_row():
-        row = [None, None, None, None]
+        row = [None, None, None, None, None, None]
         row[0] = random_normal()
         row[1] = -5 * row[0] + random_normal()
         row[2] = row[0] + row[1] + 5 * random_normal()
         row[3] = 6 if row[2] > -2 else 0
+        row[4] = 6 if row[2] > -2 else 0
+        row[5] = 6 if row[2] > -2 else 0
         return row
     random.seed(0)
     data = [random_row()
@@ -395,6 +401,9 @@ def transform(X, components):
 
 if __name__ == "__main__":
 
+    scatter()
+    compare_two_distributions()
+    make_scatterplot_matrix()
     print "correlation(xs, ys1)", correlation(xs, ys1)
     print "correlation(xs, ys2)", correlation(xs, ys2)
 
