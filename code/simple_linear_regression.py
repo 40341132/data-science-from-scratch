@@ -52,6 +52,10 @@ if __name__ == "__main__":
     alpha, beta = least_squares_fit(num_friends_good, daily_minutes_good)
     print "alpha", alpha
     print "beta", beta
+    print "num_friends_good(" + str(num_friends_good[8]) + ") , daily_minutes_good(" + str(daily_minutes_good[8]) + ") = " + str(predict(alpha, beta, num_friends_good[8]))
+    print "num_friends_good(" + str(num_friends_good[9]) + ") , daily_minutes_good(" + str(daily_minutes_good[9]) + ") = " + str(predict(alpha, beta, num_friends_good[9]))
+    print "num_friends_good(" + str(num_friends_good[10]) + ") , daily_minutes_good(" + str(daily_minutes_good[10]) + ") = " + str(predict(alpha, beta, num_friends_good[10]))
+    print "num_friends_good(" + str(num_friends_good[11]) + ") , daily_minutes_good(" + str(daily_minutes_good[11]) + ") = " + str(predict(alpha, beta, num_friends_good[11]))
 
     print "r-squared", r_squared(alpha, beta, num_friends_good, daily_minutes_good)
 
@@ -69,3 +73,11 @@ if __name__ == "__main__":
                                       0.0001)
     print "alpha", alpha
     print "beta", beta
+    print "num_friends_good(" + str(num_friends_good[8]) + ") , daily_minutes_good(" + str(
+        daily_minutes_good[8]) + ") = " + str(predict(alpha, beta, num_friends_good[8]))
+    print "num_friends_good(" + str(num_friends_good[9]) + ") , daily_minutes_good(" + str(
+        daily_minutes_good[9]) + ") = " + str(predict(alpha, beta, num_friends_good[9]))
+    print "num_friends_good(" + str(num_friends_good[10]) + ") , daily_minutes_good(" + str(
+        daily_minutes_good[10]) + ") = " + str(predict(alpha, beta, num_friends_good[10]))
+    print "num_friends_good(" + str(num_friends_good[11]) + ") , daily_minutes_good(" + str(
+        daily_minutes_good[11]) + ") = " + str(predict(alpha, beta, num_friends_good[11]))
