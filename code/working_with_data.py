@@ -1,17 +1,19 @@
+from __future__ import division
+
 import csv
 import math
 import random
 from collections import Counter, defaultdict
-from functools import partial, reduce
+from functools import partial
 
 import dateutil.parser
 import matplotlib.pyplot as plt
-from code.gradient_descent import maximize_batch
-
-from linear_algebra import shape, get_column, make_matrix, \
-    vector_sum, dot, magnitude, vector_subtract, scalar_multiply
 from probability import inverse_normal_cdf
-from stats import correlation, standard_deviation, mean
+
+from code.gradient_descent import maximize_batch
+from code.linear_algebra import shape, get_column, make_matrix, \
+    vector_sum, dot, magnitude, vector_subtract, scalar_multiply
+from code.statistics import correlation, standard_deviation, mean
 
 
 def bucketize(point, bucket_size):
@@ -39,7 +41,7 @@ def compare_two_distributions():
     plot_histogram(uniform, 10, "Uniform Histogram")
     plot_histogram(normal, 10, "Normal Histogram")
 
-def random_normal():
+def random_normal(): 
     """returns a random draw from a standard normal distribution"""
     return inverse_normal_cdf(random.random())
 
@@ -72,7 +74,7 @@ def make_scatterplot_matrix():
     # first, generate some random data
 
     num_points = 100
-
+    
     def random_row():
         row = [None, None, None, None]
         row[0] = random_normal()
@@ -144,7 +146,7 @@ def try_parse_field(field_name, value, parser_dict):
 
 def parse_dict(input_dict, parser_dict):
     return { field_name : try_parse_field(field_name, value, parser_dict)
-             for field_name, value in input_dict.items() }
+             for field_name, value in input_dict.iteritems() }
 
 #
 #
@@ -169,7 +171,7 @@ def group_by(grouper, rows, value_transform=None):
         return grouped
     else:
         return { key : value_transform(rows)
-                 for key, rows in grouped.items() }
+                 for key, rows in grouped.iteritems() }
 
 def percent_price_change(yesterday, today):
     return today["closing_price"] / yesterday["closing_price"] - 1
@@ -203,7 +205,7 @@ def rescale(data_matrix):
     ignores columns with no deviation"""
     means, stdevs = scale(data_matrix)
 
-    def rescaled(i, j):
+    def rescaled(i, j): 
         if stdevs[j] > 0:
             return (data_matrix[i][j] - means[j]) / stdevs[j]
         else:
@@ -332,7 +334,7 @@ def direction(w):
 def directional_variance_i(x_i, w):
     """the variance of the row x_i in the direction w"""
     return dot(x_i, direction(w)) ** 2
-
+    
 def directional_variance(X, w):
     """the variance of the data in the direction w"""
     return sum(directional_variance_i(x_i, w) for x_i in X)
@@ -366,11 +368,11 @@ def project(v, w):
     """return the projection of v onto w"""
     coefficient = dot(v, w)
     return scalar_multiply(coefficient, w)
-
+    
 def remove_projection_from_vector(v, w):
     """projects v onto w and subtracts the result from v"""
     return vector_subtract(v, project(v, w))
-
+    
 def remove_projection(X, w):
     """for each row of X
     projects the row onto w, and subtracts the result from the row"""
@@ -382,57 +384,59 @@ def principal_component_analysis(X, num_components):
         component = first_principal_component(X)
         components.append(component)
         X = remove_projection(X, component)
-
+        
     return components
 
 def transform_vector(v, components):
     return [dot(v, w) for w in components]
-
+    
 def transform(X, components):
-    return [transform_vector(x_i, components) for x_i in X]
+    return [transform_vector(x_i, components) for x_i in X] 
 
 if __name__ == "__main__":
 
-    print("correlation(xs, ys1)", correlation(xs, ys1))
-    print("correlation(xs, ys2)", correlation(xs, ys2))
+    scatter()
+
+    print "correlation(xs, ys1)", correlation(xs, ys1)
+    print "correlation(xs, ys2)", correlation(xs, ys2)
 
     # safe parsing
 
     data = []
 
-    with open("comma_delimited_stock_prices.csv", "r", encoding='utf8', newline='') as f:
+    with open("comma_delimited_stock_prices.csv", "rb") as f:
         reader = csv.reader(f)
         for line in parse_rows_with(reader, [dateutil.parser.parse, None, float]):
             data.append(line)
 
     for row in data:
         if any(x is None for x in row):
-            print(row)
+            print row
 
-    print("stocks")
-    with open("stocks.txt", "r", encoding='utf8', newline='') as f:
+    print "stocks"
+    with open("stocks.txt", "rb") as f:
         reader = csv.DictReader(f, delimiter="\t")
         data = [parse_dict(row, { 'date' : dateutil.parser.parse,
-                                  'closing_price' : float })
+                                  'closing_price' : float }) 
                 for row in reader]
 
     max_aapl_price = max(row["closing_price"]
                          for row in data
                          if row["symbol"] == "AAPL")
-    print("max aapl price", max_aapl_price)
+    print "max aapl price", max_aapl_price
 
     # group rows by symbol
     by_symbol = defaultdict(list)
-
+    
     for row in data:
         by_symbol[row["symbol"]].append(row)
-
+    
     # use a dict comprehension to find the max for each symbol
     max_price_by_symbol = { symbol : max(row["closing_price"]
                             for row in grouped_rows)
-                            for symbol, grouped_rows in by_symbol.items() }
-    print("max price by symbol")
-    print(max_price_by_symbol)
+                            for symbol, grouped_rows in by_symbol.iteritems() }
+    print "max price by symbol"
+    print max_price_by_symbol
 
     # key is symbol, value is list of "change" dicts
     changes_by_symbol = group_by(picker("symbol"), data, day_over_day_changes)
@@ -441,8 +445,8 @@ if __name__ == "__main__":
                    for changes in changes_by_symbol.values()
                    for change in changes]
 
-    print("max change", max(all_changes, key=picker("change")))
-    print("min change", min(all_changes, key=picker("change")))
+    print "max change", max(all_changes, key=picker("change"))
+    print "min change", min(all_changes, key=picker("change"))
 
     # to combine percent changes, we add 1 to each, multiply them, and subtract 1
     # for instance, if we combine +10% and -20%, the overall change is
@@ -456,24 +460,24 @@ if __name__ == "__main__":
     overall_change_by_month = group_by(lambda row: row['date'].month,
                                        all_changes,
                                        overall_change)
-    print("overall change by month")
-    print(overall_change_by_month)
+    print "overall change by month"
+    print overall_change_by_month
 
-    print("rescaling")
+    print "rescaling"
 
     data = [[1, 20, 2],
             [1, 30, 3],
             [1, 40, 4]]
 
-    print("original: ", data)
-    print("scale: ", scale(data))
-    print("rescaled: ", rescale(data))
-    print()
+    print "original: ", data
+    print "scale: ", scale(data)
+    print "rescaled: ", rescale(data)
+    print
 
-    print("PCA")
+    print "PCA"
 
     Y = de_mean_matrix(X)
     components = principal_component_analysis(Y, 2)
-    print("principal components", components)
-    print("first point", Y[0])
-    print("first point transformed", transform_vector(Y[0], components))
+    print "principal components", components
+    print "first point", Y[0]
+    print "first point transformed", transform_vector(Y[0], components)
