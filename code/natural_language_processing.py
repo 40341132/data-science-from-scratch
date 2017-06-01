@@ -3,8 +3,9 @@ import math, random, re
 from collections import defaultdict, Counter
 from bs4 import BeautifulSoup
 import requests
+import matplotlib.pyplot as plt
 
-def plot_resumes(plt):
+def plot_resumes():
     data = [ ("big data", 100, 15), ("Hadoop", 95, 25), ("Python", 75, 50),
          ("R", 50, 40), ("machine learning", 80, 20), ("statistics", 20, 60),
          ("data science", 60, 70), ("analytics", 90, 3),
@@ -241,7 +242,7 @@ for iter in range(1000):
             document_lengths[d] += 1
 
 if __name__ == "__main__":
-
+    plot_resumes()
     document = get_document()
 
     bigrams = zip(document, document[1:])
